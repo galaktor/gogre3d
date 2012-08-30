@@ -6,6 +6,15 @@ Ogre3d does not provide a "clean C" interface, which makes this adapter necessar
 
 If you plan to use Ogre from C or golang, feel free to fork and contribute if the interface you find is missing anything.
 
+# build and run
+This repo currently contains the ogre headers (version 1.8.0) in the directory "ogreinclude", since the wrapper uses cgo and needs to include them. I did not include the shared libs however since they are huge and can be platform dependent. I provided a little script "runme.sh" to do the compiling and running of the demo. All you need to do is provide the ogre runtime libs in the "ogrelib" dir (read "COPY_HERE.txt" for a file list).
+
+Once the libs are copied in, run the script like so
+
+```bash
+$ bash runme.sh
+```
+
 # notes
 
 The current stage is more an experimental proof-of-concept, for me to understand how golang interops with C/C++ etc. It turned out to be quite straightforward, but I obviously only picked a tiny subset of ogre at this point.
