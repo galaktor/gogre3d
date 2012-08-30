@@ -14,6 +14,9 @@ Once the libs are copied in, run the script like so
 ```bash
 $ bash runme.sh
 ```
+If the (very simple) test works, you will see an ogre head like such:
+
+![ogre](https://raw.github.com/galaktor/gogre3d/master/test_worked.png)
 
 # notes
 
