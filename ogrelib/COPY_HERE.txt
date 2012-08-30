@@ -1,0 +1,8 @@
+libOgreMain.so
+libOgreMain.so.1.8.0
+RenderSystem_GL.so
+RenderSystem_GL.so.1.8.0
+
+
+
+from Ogre3d @ http://www.ogre3d.org/
