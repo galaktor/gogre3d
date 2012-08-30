@@ -29,7 +29,7 @@ To make this wrapper more comprehensive, a few questions must be answered:
 * maybe find a nicer (safer?) way than naked void pointers as handles to ogre objects
 
 ## SWIG
-SWIG is the recommended way to wrap C++ code for golang, which it supports. I am aware of other attempts to create ogre wrappers using SWIG (i.e. OgreDotNet, older Python-Ogre), and their seems to have been a number of issues in both cases.
+SWIG is the recommended way to wrap C++ code for golang, which it supports. I am aware of other attempts to create ogre wrappers using SWIG (i.e. OgreDotNet, older PyOgre), and there seems to have been a number of issues in both cases.
 
 I will play with SWIG at some point, maybe it's a viable option for a large-scale golang wrapper, maybe not.
 Nonetheless, I can get going with what I have now until I have more complex demands to the render engine.
