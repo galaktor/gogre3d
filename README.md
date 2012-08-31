@@ -38,6 +38,13 @@ Nonetheless, I can get going with what I have now until I have more complex dema
 
 *Contact me if you are interested in a golang wrapper for ogre*. Maybe we can move this into a more generic direction if there is more interest behind it.
 
+### other attempts at C interfaces for ogre
+good discussion going on at the ogre3d forums:
+http://www.ogre3d.org/forums/viewtopic.php?f=3&t=63153
+
+which resulted in a ogre interface for c (deprecated? not sure yet)
+http://code.google.com/p/llcoi/
+
 # License
 ## gogre3d
 The MIT License (MIT)
