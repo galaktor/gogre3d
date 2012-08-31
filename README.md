@@ -18,6 +18,8 @@ If the (very simple) test works, you will see an ogre head like such:
 
 ![ogre](https://raw.github.com/galaktor/gogre3d/master/test_worked.png)
 
+Keep in mind that you need to install Ogre's dependencies as well, but installing ogre is outside the scope of this project.
+
 # notes
 
 The current stage is more an experimental proof-of-concept, for me to understand how golang interops with C/C++ etc. It turned out to be quite straightforward, but I obviously only picked a tiny subset of ogre at this point.
