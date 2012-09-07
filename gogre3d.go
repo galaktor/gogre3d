@@ -1,3 +1,8 @@
+/*
+Ogre3d bindings for Go via a slim C-Wrapper. By no means complete, will grow with my project (or by other contributions).
+TODO: ditch custom C-Wrapper and use community C-bindings to Ogre instead
+*/
+
 package gogre3d
 
 /*
