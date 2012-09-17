@@ -7,6 +7,7 @@ extern "C" {
 
   // naked pointers for now
   typedef void* RootPtr;
+  typedef void* RenderSystemPtr;
   typedef void* RenderWindowPtr;
   typedef void* SceneManagerPtr;
   typedef void* TextureManagerPtr;
@@ -19,8 +20,12 @@ extern "C" {
 
   RootPtr New_Root(char* pluginsCfg, char* ogreCfg, char* logfile);
   void Delete_Root(RootPtr r);
+  void Root_SetRenderSystem(RootPtr r, RenderSystemPtr s);
+  RenderSystemPtr Root_GetRenderSystemByName(RootPtr r, char* name);
+  void RenderSystem_SetConfigOption(RenderSystemPtr r, char* key, char* value);
   int Root_ShowConfigDialog(RootPtr r);
   RenderWindowPtr Root_Initialise(RootPtr r, int createWindow, char* windowTitle);
+  void Root_LoadPlugin(RootPtr r, char* name);
   SceneManagerPtr Root_CreateSceneManager(RootPtr r);
   int Root_RenderOneFrame(RootPtr r);
   
@@ -52,6 +57,8 @@ extern "C" {
 
   SceneNodePtr SceneNode_CreateChildSceneNode(SceneNodePtr s);
   void SceneNode_AttachObject(SceneNodePtr s, EntityPtr other);
+  void SceneNode_DetachObject(SceneNodePtr s, EntityPtr other);
+  void SceneNode_SetPosition(SceneNodePtr s, float x, float y, float z);
 
   void Light_SetPosition(LightPtr l, float x, float y, float z);
 

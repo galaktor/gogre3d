@@ -26,6 +26,24 @@ func (r *Root) Delete() {
 	C.Delete_Root(r.CPtr)
 }
 
+type RenderSystem struct {
+	CPtr C.RenderSystemPtr
+}
+
+func (r *Root) GetRenderSystemByName(name string) RenderSystem {
+	var result RenderSystem
+	result.CPtr = C.Root_GetRenderSystemByName(r.CPtr, C.CString(name))
+	return result
+}
+
+func (r *Root) SetRenderSystem(s RenderSystem) {
+	C.Root_SetRenderSystem(r.CPtr, s.CPtr)
+}
+
+func (r *RenderSystem) SetConfigOption(key, value string) {
+	C.RenderSystem_SetConfigOption(r.CPtr, C.CString(key), C.CString(value))
+}
+
 func (r *Root) ShowConfigDialog() bool {
 	result := C.Root_ShowConfigDialog(r.CPtr)
 	return gobool(result)
@@ -45,6 +63,10 @@ func (r *Root) CreateSceneManager() SceneManager {
 
 func (r *Root) RenderOneFrame() bool {
 	return gobool(C.Root_RenderOneFrame(r.CPtr))
+}
+
+func (r *Root) LoadPlugin(name string) {
+	C.Root_LoadPlugin(r.CPtr, C.CString(name))
 }
 
 type RenderWindow struct {
@@ -181,6 +203,14 @@ func (n *SceneNode) CreateChildSceneNode() SceneNode {
 
 func (n *SceneNode) AttachObject(e Entity) {
 	C.SceneNode_AttachObject(n.CPtr, e.CPtr)
+}
+
+func (n *SceneNode) DetachObject(e Entity) {
+	C.SceneNode_DetachObject(n.CPtr, e.CPtr)
+}
+
+func (n *SceneNode) SetPosition(x, y, z float32) {
+	C.SceneNode_SetPosition(n.CPtr, C.float(x), C.float(y), C.float(z))
 }
 
 type Light struct {

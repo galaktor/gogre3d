@@ -20,12 +20,28 @@ void Delete_Root(RootPtr r) {
   delete (Root*)r;
 }
 
+void Root_SetRenderSystem(RootPtr r, RenderSystemPtr s) {
+  ((Root*)r)->setRenderSystem((RenderSystem*)s);
+}
+
+RenderSystemPtr Root_GetRenderSystemByName(RootPtr r, char* name) {
+  return (RenderSystemPtr) ((Root*)r)->getRenderSystemByName(name);
+}
+
+void RenderSystem_SetConfigOption(RenderSystemPtr r, char* key, char* value) {
+  ((RenderSystem*)r)->setConfigOption(key, value);
+}
+
 int Root_ShowConfigDialog(RootPtr r) {
   return (int) ((Root*)r)->showConfigDialog();
 }
 
 RenderWindowPtr Root_Initialise(RootPtr r, int createWindow, char* windowTitle) {
   return (RenderWindowPtr) ((Root*)r)->initialise((bool)createWindow, windowTitle);
+}
+
+void Root_LoadPlugin(RootPtr r, char* name) {
+  ((Root*)r)->loadPlugin(name);
 }
 
 SceneManagerPtr Root_CreateSceneManager(RootPtr r) {
@@ -118,6 +134,14 @@ SceneNodePtr SceneNode_CreateChildSceneNode(SceneNodePtr s) {
 
 void SceneNode_AttachObject(SceneNodePtr s, EntityPtr other) {
   ((SceneNode*)s)->attachObject((Ogre::MovableObject*)other);
+}
+
+void SceneNode_DetachObject(SceneNodePtr s, EntityPtr other) {
+  ((SceneNode*)s)->detachObject((Ogre::MovableObject*)other);
+}
+
+void SceneNode_SetPosition(SceneNodePtr s, float x, float y, float z) {
+  ((SceneNode*)s)->setPosition(x, y, z);
 }
 
 void Light_SetPosition(LightPtr l, float x, float y, float z) {
