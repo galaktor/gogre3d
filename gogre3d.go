@@ -6,157 +6,169 @@ TODO: ditch custom C-Wrapper and use community C-bindings to Ogre instead
 
 package gogre3d
 
-/*
- #cgo LDFLAGS: -L./ogrelib -lOgreMain -logrec
- #include "ogrec.h"
+/* 
+ #cgo LDFLAGS: -L./ogrelib -lOgreMain -lOIS -lllcoi
+ #include "ogre_interface.h"
+ #include "ois_interface.h"
 */
 import "C"
 
 type Root struct {
-	CPtr C.RootPtr
+	CPtr C.RootHandle
 }
 
 func NewRoot(pluginsCfg, ogreCfg, logfile string) Root {
 	var result Root
-	result.CPtr = C.New_Root(C.CString(pluginsCfg), C.CString(ogreCfg), C.CString(logfile))
+	result.CPtr = C.create_root(C.CString(pluginsCfg), C.CString(ogreCfg), C.CString(logfile))
 	return result
 }
 
-func (r *Root) Delete() {
-	C.Delete_Root(r.CPtr)
+func (r *Root) ReleaseEngine() {
+	C.release_engine()
+	r.CPtr = nil
 }
 
 type RenderSystem struct {
-	CPtr C.RenderSystemPtr
+	CPtr C.RenderSystemHandle
 }
 
 func (r *Root) GetRenderSystemByName(name string) RenderSystem {
 	var result RenderSystem
-	result.CPtr = C.Root_GetRenderSystemByName(r.CPtr, C.CString(name))
+	result.CPtr = C.get_render_system_by_name(C.CString(name))
 	return result
 }
 
-func (r *Root) SetRenderSystem(s RenderSystem) {
-	C.Root_SetRenderSystem(r.CPtr, s.CPtr)
+func (r *RenderSystem) SetConfigOption(key, value string) {
+	C.render_system_set_config_option(r.CPtr, C.CString(key), C.CString(value))
 }
 
-func (r *RenderSystem) SetConfigOption(key, value string) {
-	C.RenderSystem_SetConfigOption(r.CPtr, C.CString(key), C.CString(value))
+func (r *Root) SetRenderSystem(s RenderSystem) {
+	C.set_render_system(s.CPtr)
 }
+
+
 
 func (r *Root) ShowConfigDialog() bool {
-	result := C.Root_ShowConfigDialog(r.CPtr)
+	result := C.show_config_dialog()
 	return gobool(result)
 }
 
 func (r *Root) Initialise(createWindow bool, windowTitle string) RenderWindow {
 	var result RenderWindow
-	result.CPtr = C.Root_Initialise(r.CPtr, cbool(createWindow), C.CString(windowTitle))
+	result.CPtr = C.root_initialise(cbool(createWindow), C.CString(windowTitle))
 	return result
 }
 
-func (r *Root) CreateSceneManager() SceneManager {
+func (r *Root) CreateSceneManager(typename, instancename string) SceneManager {
 	var result SceneManager
-	result.CPtr = C.Root_CreateSceneManager(r.CPtr)
+	result.CPtr = C.create_scene_manager(C.CString(typename), C.CString(instancename))
 	return result
 }
 
-func (r *Root) RenderOneFrame() bool {
-	return gobool(C.Root_RenderOneFrame(r.CPtr))
+func (r *Root) RenderOneFrame(timestep float32) bool {
+	return gobool(C.render_one_frame_ex(C.float(timestep)))
 }
 
 func (r *Root) LoadPlugin(name string) {
-	C.Root_LoadPlugin(r.CPtr, C.CString(name))
+	C.load_ogre_plugin(C.CString(name))
 }
 
 type RenderWindow struct {
-	CPtr C.RenderWindowPtr
+	CPtr C.RenderWindowHandle
 }
 
 func (rw *RenderWindow) AddViewport(c Camera) Viewport {
 	var result Viewport
-	result.CPtr = C.RenderWindow_AddViewport(rw.CPtr, c.CPtr)
+	result.CPtr = C.add_viewport(c.CPtr)
 	return result
 }
 
 func (rw *RenderWindow) IsClosed() bool {
-	result := C.RenderWindow_IsClosed(rw.CPtr)
+	result := C.render_window_closed()
 	return gobool(result)
 }
 
 type SceneManager struct {
-	CPtr C.SceneManagerPtr
+	CPtr C.SceneManagerHandle
 }
 
 func (sm *SceneManager) CreateCamera(name string) Camera {
 	var result Camera
-	result.CPtr = C.SceneManager_CreateCamera(sm.CPtr, C.CString(name))
+	result.CPtr = C.create_camera(C.CString(name))
 	return result
 }
 
-func (sm *SceneManager) CreateEntity(name, resource string) Entity {
+func (sm *SceneManager) CreateEntity(name, meshfile string) Entity {
 	var result Entity
-	result.CPtr = C.SceneManager_CreateEntity(sm.CPtr, C.CString(name), C.CString(resource))
+	result.CPtr = C.create_entity(C.CString(name), C.CString(meshfile))
 	return result
 }
 
 func (sm *SceneManager) CreateLight(name string) Light {
 	var result Light
-	result.CPtr = C.SceneManager_CreateLight(sm.CPtr, C.CString(name))
+	result.CPtr = C.create_light(C.CString(name))
 	return result
 }
 
+/*
 func (sm *SceneManager) GetRootSceneNode() SceneNode {
 	var result SceneNode
 	result.CPtr = C.SceneManager_GetRootSceneNode(sm.CPtr)
 	return result
-}
+ }
+*/
 
 func (sm *SceneManager) SetAmbientLight(r, g, b, a float32) {
-	C.SceneManager_SetAmbientLight(sm.CPtr, C.float(r), C.float(g), C.float(b), C.float(a))
+	C.set_ambient_light_rgba(C.float(r), C.float(g), C.float(b), C.float(a))
 }
 
 type Camera struct {
-	CPtr C.CameraPtr
+	CPtr C.CameraHandle
 }
 
 func (c *Camera) SetPosition(x, y, z float32) {
-	C.Camera_SetPosition(c.CPtr, C.float(x), C.float(y), C.float(z))
+	C.camera_set_position(c.CPtr, C.float(x), C.float(y), C.float(z))
 }
 
 func (c *Camera) LookAt(x, y, z float32) {
-	C.Camera_LookAt(c.CPtr, C.float(x), C.float(y), C.float(z))
+	C.camera_lookat(c.CPtr, C.float(x), C.float(y), C.float(z))
 }
 
 func (c *Camera) SetNearClipDistance(distance float32) {
-	C.Camera_SetNearClipDistance(c.CPtr, C.float(distance))
+	C.camera_set_near_clip_distance(c.CPtr, C.float(distance))
 }
 
-func (c *Camera) SetAspectRatio(ratio float32) {
-	C.Camera_SetAspectRatio(c.CPtr, C.float(ratio))
+func (c *Camera) SetAspectRatio(width, height float32) {
+	C.camera_set_aspect_ratio(c.CPtr, C.float(width), C.float(height))
 }
 
 type Viewport struct {
-	CPtr C.ViewportPtr
+	CPtr C.ViewportHandle
 }
 
-func (v *Viewport) SetBackgroundColour(r, g, b, a float32) {
-	C.Viewport_SetBackgroundColour(v.CPtr, C.float(r), C.float(g), C.float(b), C.float(a))
+func (v *Viewport) SetBackgroundColour(r, g, b float32) {
+	C.viewport_set_background_colour(v.CPtr, C.float(r), C.float(g), C.float(b))
 }
 
-func (v *Viewport) GetActualWidth() float32 {
-	result := C.Viewport_GetActualWidth(v.CPtr)
+func (v *Viewport) GetWidth() float32 {
+	result := C.viewport_get_width(v.CPtr)
 	return float32(result)
 }
 
-func (v *Viewport) GetActualHeight() float32 {
-	result := C.Viewport_GetActualHeight(v.CPtr)
+func (v *Viewport) GetHeight() float32 {
+	result := C.viewport_get_height(v.CPtr)
 	return float32(result)
 }
 
+func SetDefaultNumMipmaps(num int) {
+	C.set_default_num_mipmaps(C.int(num))
+}
+
+/*
 type TextureManager struct {
 	CPtr C.TextureManagerPtr
 }
+
 
 // todo: once in own file/namespace, just have GetInstance()
 func GetTextureManager() TextureManager {
@@ -165,9 +177,8 @@ func GetTextureManager() TextureManager {
 	return result
 }
 
-func (t *TextureManager) SetDefaultNumMipmaps(num int) {
-	C.TextureManager_SetDefaultNumMipmaps(t.CPtr, C.int(num))
-}
+
+
 
 type ResourceGroupManager struct {
 	CPtr C.ResourceGroupManagerPtr
@@ -178,60 +189,60 @@ func GetResourceGroupManager() ResourceGroupManager {
 	result.CPtr = C.ResourceGroupManager_GetInstance()
 	return result
 }
+*/
 
-func (r *ResourceGroupManager) AddResourceLocation(location, locationType string) {
-	C.ResourceGroupManager_AddResourceLocation(r.CPtr, C.CString(location), C.CString(locationType))
+func AddResourceLocation(location, locationType, group string) {
+	C.add_resource_location(C.CString(location), C.CString(locationType), C.CString(group))
 }
 
-func (r *ResourceGroupManager) InitialiseAllResourceGroups() {
-	C.ResourceGroupManager_InitialiseAllResourceGroups(r.CPtr)
+func InitialiseAllResourceGroups() {
+	C.initialise_all_resourcegroups()
 }
 
 type Entity struct {
-	CPtr C.EntityPtr
+	CPtr C.EntityHandle
 }
 
 type SceneNode struct {
-	CPtr C.SceneNodePtr
+	CPtr C.SceneNodeHandle
 }
 
-func (n *SceneNode) CreateChildSceneNode() SceneNode {
+func CreateChildSceneNode(name string) SceneNode {
 	var result SceneNode
-	result.CPtr = C.SceneNode_CreateChildSceneNode(n.CPtr)
+	result.CPtr = C.create_child_scenenode(C.CString(name))
 	return result
 }
 
-func (n *SceneNode) AttachObject(e Entity) {
-	C.SceneNode_AttachObject(n.CPtr, e.CPtr)
+func (n *SceneNode) Attach(e Entity) {
+	C.attach_entity_to_scenenode(e.CPtr, n.CPtr)
 }
 
-func (n *SceneNode) DetachObject(e Entity) {
-	C.SceneNode_DetachObject(n.CPtr, e.CPtr)
+func (n *SceneNode) Detach(e Entity) {
+	C.scenenode_detach_entity(n.CPtr, e.CPtr)
 }
 
 func (n *SceneNode) SetPosition(x, y, z float32) {
-	C.SceneNode_SetPosition(n.CPtr, C.float(x), C.float(y), C.float(z))
+	C.scenenode_set_position(n.CPtr, C.float(x), C.float(y), C.float(z))
 }
 
 type Light struct {
-	CPtr C.LightPtr
+	CPtr C.LightHandle
 }
 
 func (l *Light) SetPosition(x, y, z float32) {
-	C.Light_SetPosition(l.CPtr, C.float(x), C.float(y), C.float(z))
+	C.light_set_position(l.CPtr, C.float(x), C.float(y), C.float(z))
 }
 
 func MessagePump() {
-	C.WindowEventUtilities_MessagePump()
+	C.pump_messages()
 }
-
 
 // stupid helper for C booleans
 func gobool(b C.int) bool {
-	if b == C.FALSE {
+	if b == C.int(0) {
 		return false
 	}
-	
+
 	return true
 }
 
