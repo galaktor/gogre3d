@@ -7,7 +7,7 @@ TODO: ditch custom C-Wrapper and use community C-bindings to Ogre instead
 package gogre3d
 
 /* 
- #cgo LDFLAGS: -L./ogrelib -lOgreMain -lOIS -lllcoi
+ #cgo LDFLAGS: -L./ogrelib -lllcoi
  #include "ogre_interface.h"
  #include "ois_interface.h"
 */
@@ -20,6 +20,7 @@ type Root struct {
 func NewRoot(pluginsCfg, ogreCfg, logfile string) Root {
 	var result Root
 	result.CPtr = C.create_root(C.CString(pluginsCfg), C.CString(ogreCfg), C.CString(logfile))
+
 	return result
 }
 
@@ -35,6 +36,7 @@ type RenderSystem struct {
 func (r *Root) GetRenderSystemByName(name string) RenderSystem {
 	var result RenderSystem
 	result.CPtr = C.get_render_system_by_name(C.CString(name))
+	
 	return result
 }
 
@@ -46,8 +48,6 @@ func (r *Root) SetRenderSystem(s RenderSystem) {
 	C.set_render_system(s.CPtr)
 }
 
-
-
 func (r *Root) ShowConfigDialog() bool {
 	result := C.show_config_dialog()
 	return gobool(result)
@@ -56,12 +56,14 @@ func (r *Root) ShowConfigDialog() bool {
 func (r *Root) Initialise(createWindow bool, windowTitle string) RenderWindow {
 	var result RenderWindow
 	result.CPtr = C.root_initialise(cbool(createWindow), C.CString(windowTitle))
+	
 	return result
 }
 
 func (r *Root) CreateSceneManager(typename, instancename string) SceneManager {
 	var result SceneManager
 	result.CPtr = C.create_scene_manager(C.CString(typename), C.CString(instancename))
+	
 	return result
 }
 
@@ -80,6 +82,7 @@ type RenderWindow struct {
 func (rw *RenderWindow) AddViewport(c Camera) Viewport {
 	var result Viewport
 	result.CPtr = C.add_viewport(c.CPtr)
+
 	return result
 }
 
@@ -95,18 +98,21 @@ type SceneManager struct {
 func (sm *SceneManager) CreateCamera(name string) Camera {
 	var result Camera
 	result.CPtr = C.create_camera(C.CString(name))
+	
 	return result
 }
 
 func (sm *SceneManager) CreateEntity(name, meshfile string) Entity {
 	var result Entity
 	result.CPtr = C.create_entity(C.CString(name), C.CString(meshfile))
+	
 	return result
 }
 
 func (sm *SceneManager) CreateLight(name string) Light {
 	var result Light
 	result.CPtr = C.create_light(C.CString(name))
+	
 	return result
 }
 
@@ -166,7 +172,7 @@ func SetDefaultNumMipmaps(num int) {
 
 /*
 type TextureManager struct {
-	CPtr C.TextureManagerPtr
+	CPtr TextureManagerPtr
 }
 
 
@@ -181,7 +187,7 @@ func GetTextureManager() TextureManager {
 
 
 type ResourceGroupManager struct {
-	CPtr C.ResourceGroupManagerPtr
+	CPtr ResourceGroupManagerPtr
 }
 
 func GetResourceGroupManager() ResourceGroupManager {
@@ -210,6 +216,7 @@ type SceneNode struct {
 func CreateChildSceneNode(name string) SceneNode {
 	var result SceneNode
 	result.CPtr = C.create_child_scenenode(C.CString(name))
+
 	return result
 }
 

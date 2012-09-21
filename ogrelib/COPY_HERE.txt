@@ -1,8 +1,16 @@
-libOgreMain.so
-libOgreMain.so.1.8.0
-RenderSystem_GL.so
-RenderSystem_GL.so.1.8.0
+Ogre3d @ http://www.ogre3d.org/
+* libOgreMain.so
+* libOgreMain.so.1.8.0
+* RenderSystem_GL.so
+* RenderSystem_GL.so.1.8.0
+
+
+OIS, i.e. from ogredeps @ https://bitbucket.org/cabalistic/ogredeps
+* libOIS.so
+
+llcoi @ https://bitbucket.org/galaktor/llcoi
+* libllcoi.so
 
 
 
-from Ogre3d @ http://www.ogre3d.org/
+
