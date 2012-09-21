@@ -44,6 +44,19 @@ gogre3d uses #cgo (which effectively uses gcc) to include and link header and li
 ## importing gogre3d
 All of the exposed functionality is currently in a single package, 'gogre3d'. Refer to the ./sample/sample.go file for an example use of gogre3d. It can be run if the runtime dependencies are available (see above).
 
+## running the sample
+Assuming you have llcoi/ogre/ois runtime deps available, you can navigate to the sample dir and just run it.
+
+```
+$ cd sample
+$ go run sample.go
+```
+
+# TODOs
+* split gogre3d.go into several files
+* improve installation ("go get..." with runtime deps on llcoi/ogre/ois)
+* expose input functionality and include in sample
+
 # License
 gogre3d is licensed under the MIT license. You can find a copy in the LICENSE file, or online at http://opensource.org/licenses/mit-license.php
 Copyright (c) 2012 Raphael Estrada (http://www.galaktor.net)
