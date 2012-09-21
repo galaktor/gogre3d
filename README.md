@@ -52,6 +52,9 @@ $ cd sample
 $ go run sample.go
 ```
 
+you should see the following image (while it's rendered in realtime, it does not move at the moment)
+![sample render](https://raw.github.com/galaktor/gogre3d/master/sample/test_worked.png)
+
 # TODOs
 * split gogre3d.go into several files
 * improve installation ("go get..." with runtime deps on llcoi/ogre/ois)
