@@ -1,44 +1,41 @@
-// +build ignore
-
 package main 
 
-import "."
+import ".."
 
 func main() {
-	root := gogre3d.NewRoot("plugins.cfg", "", "ogre.log")
-	if cancel := !root.ShowConfigDialog(); cancel == true {
-		root.Delete()
-		return
-	}
+	root := gogre3d.NewRoot("", "", "ogre.log")
+	// setup OpenGL                                                               
+        root.LoadPlugin("RenderSystem_GL")
+        rs := root.GetRenderSystemByName("OpenGL Rendering Subsystem")
+        rs.SetConfigOption("Full Screen", "No")
+        rs.SetConfigOption("VSync", "No")
+        rs.SetConfigOption("Video Mode", "800 x 600 @ 32-bit")
+        root.SetRenderSystem(rs)
 
 	window := root.Initialise(true, "MyWindow")
-	sm := root.CreateSceneManager()
+	sm := root.CreateSceneManager("DefaultSceneManager", "The SceneManager")
 	cam := sm.CreateCamera("MyCamera")
 	cam.SetPosition(0, 0, 80)
 	cam.LookAt(0, 0, -300)
 	cam.SetNearClipDistance(5)
 
 	vp := window.AddViewport(cam)
-	vp.SetBackgroundColour(0, 0, 0, 0)
+	vp.SetBackgroundColour(0, 0, 0)
 	
-	w, h := vp.GetActualWidth(), vp.GetActualHeight()
-	cam.SetAspectRatio(w / h)
+	cam.SetAspectRatio(vp.GetWidth(), vp.GetHeight())
 	
-	tm := gogre3d.GetTextureManager()
-	tm.SetDefaultNumMipmaps(5)
+	gogre3d.SetDefaultNumMipmaps(5)
 
-	rm := gogre3d.GetResourceGroupManager()
-	rm.AddResourceLocation("./Media/fonts", "FileSystem")
-	rm.AddResourceLocation("./Media/models", "FileSystem")
-	rm.AddResourceLocation("./Media/materials/scripts", "FileSystem")
-	rm.AddResourceLocation("./Media/materials/programs", "FileSystem")
-	rm.AddResourceLocation("./Media/materials/textures", "FileSystem")
-	rm.InitialiseAllResourceGroups()
+	gogre3d.AddResourceLocation("./media/fonts", "FileSystem", "Default")
+	gogre3d.AddResourceLocation("./media/models", "FileSystem", "Default")
+	gogre3d.AddResourceLocation("./media/materials/scripts", "FileSystem", "Default")
+	gogre3d.AddResourceLocation("./media/materials/programs", "FileSystem", "Default")
+	gogre3d.AddResourceLocation("./media/materials/textures", "FileSystem", "Default")
+	gogre3d.InitialiseAllResourceGroups()
 
 	head := sm.CreateEntity("Head", "ogrehead.mesh")
-	rnode := sm.GetRootSceneNode()
-	headnode := rnode.CreateChildSceneNode()
-	headnode.AttachObject(head)
+	headnode := gogre3d.CreateChildSceneNode("Head")
+	headnode.Attach(head)
 
 	sm.SetAmbientLight(0.5, 0.5, 0.5, 0)
 	
@@ -48,12 +45,12 @@ func main() {
 	for {
 		gogre3d.MessagePump()
 		if window.IsClosed() {
-			root.Delete()
+			root.ReleaseEngine()
 			return
 		}
 
 		if error := root.RenderOneFrame(); error == false {
-			root.Delete()
+			root.ReleaseEngine()
 			return
 		}
 	}

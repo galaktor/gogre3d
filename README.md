@@ -1,80 +1,49 @@
 # gogre3d
+I am working on a game project using golang and intend to use Ogre3d for graphics. For this purpose I created a slim Go wrapper for ogre3d: enter "gogre3d".
 
-I am working on a game project using golang and intend to use Ogre3d for graphics. As part of this project I will create a simple C adapter to Ogre, which will be wrapped by a the "gogre3d" golang module via cgo.
+Ogre3d has a huge codebase, and I do not aim to provide a generic, complete interface to it all. Instead it will start off very small, based on my own actual requirements, and grow with the game project.
 
-Ogre3d does not provide a "clean C" interface, which makes this adapter necessary. Given the huge scope of Ogre3d, I do not aim to provide a complete golang/C interface. Instead it will start off very small, and grow with the game project.
+## llcoi
+gogre3d links to Ogre3d via the llcoi project (https://bitbucket.org/galaktor/llcoi). llcoi is a minimalist ANSI C interface to Ogre. The capabilities of gogre3d are directly dependant on llcoi exposing the required functionality. Keep that in mind if you need to change gogre3d - you might need to add a function or two to llcoi, first. I encourage you to contribute whatever you add to llcoi back to the project - it's not an official part of Ogre, and needs the community in order to expand.
 
-If you plan to use Ogre from C or golang, feel free to fork and contribute if the interface you find is missing anything.
+# using it
+gogre3d is still in a /very/ early stage - as a result, the build/deployment is not very user-friendly (yet!). Until I make that better, some minor manual configuration is required.
 
-# build and run
-This repo currently contains the ogre headers (version 1.8.0) in the directory "ogreinclude", since the wrapper uses cgo and needs to include them. I did not include the shared libs however since they are huge and can be platform dependent. I provided a little script "runme.sh" to do the compiling and running of the demo. All you need to do is provide the ogre runtime libs in the "ogrelib" dir (read "COPY_HERE.txt" for a file list).
+## dependencies
+gogre3d is /not/ a port of ogre to golang. It's a wrapper, and in fact it's really just a really slim wrapper on top of the already slim C wrapper llcoi. gogre3d compiles and links only to llcoi. llcoi, however, obviously depends on Ogre (and OIS).
 
-Once the libs are copied in, run the script like so
+### gogre3d depends /directly/ on
+* llcoi
+ * ogre_interface.h
+ * ois_interface.h
+ * libllcoi.so
 
-```bash
-$ bash runme.sh
+
+### as a result, gogre3d also depends /indirectly/ (through llcoi) on
+* OIS
+ * libOIS.so
+* Ogre
+ * libOgreMain.so
+ * (.. other run-time and compile-time dependencies ...)
+
+
+As far as build and compiling is concerned, llcoi is all that's needed. However, your application might not run if other runtime deps are missing. Obviously Ogre itself has many other dependencies. Depending on how you built llcoi, OIS, Ogre and their dependencies must be available in order to use gogre3d. Installing Ogre is way outside of this scope.
+
+### configuring llcoi paths
+gogre3d uses #cgo (which effectively uses gcc) to include and link header and library files. It needs to know where to find the llcoi headers and dyamic library, otherwise gogre3d won't compile. So open gogre3d.go and right at the top you need to match the paths to your environment:
+
+```go
+ #cgo LDFLAGS: -L/path/to/llcoi/library  // <- set this to where llcoi lib is
+ #cgo LDFLAGS: -lllcoi                   // <- only change if lib name differs
+
+ #cgo CFLAGS:  -I/path/to/llcoi/headers  // <- set this to where the below headers are
+ #include "ogre_interface.h"             // <- leave this; llcoi ogre header
+ #include "ois_interface.h"              // <- leave this; llcoi ois header
 ```
-If the (very simple) test works, you will see an ogre head like such:
 
-![ogre](https://raw.github.com/galaktor/gogre3d/master/test_worked.png)
-
-Keep in mind that you need to install Ogre's dependencies as well, but installing ogre is outside the scope of this project.
-
-# notes
-
-The current stage is more an experimental proof-of-concept, for me to understand how golang interops with C/C++ etc. It turned out to be quite straightforward, but I obviously only picked a tiny subset of ogre at this point.
-
-## porting ogre to golang
-To make this wrapper more comprehensive, a few questions must be answered:
-* how to map inheritance/polymorphism to golangs interfaces and structs
-* how to handle constants, enums and the likes
-* maybe find a nicer (safer?) way than naked void pointers as handles to ogre objects
-
-## SWIG
-SWIG is the recommended way to wrap C++ code for golang, which it supports. I am aware of other attempts to create ogre wrappers using SWIG (i.e. OgreDotNet, older PyOgre), and there seems to have been a number of issues in both cases.
-
-I will play with SWIG at some point, maybe it's a viable option for a large-scale golang wrapper, maybe not.
-Nonetheless, I can get going with what I have now until I have more complex demands to the render engine.
-
-*Contact me if you are interested in a golang wrapper for ogre*. Maybe we can move this into a more generic direction if there is more interest behind it.
-
-### other attempts at C interfaces for ogre
-good discussion going on at the ogre3d forums:
-http://www.ogre3d.org/forums/viewtopic.php?f=3&t=63153
-
-which resulted in a ogre interface for c (deprecated? not sure yet)
-http://code.google.com/p/llcoi/
+## importing gogre3d
+All of the exposed functionality is currently in a single package, 'gogre3d'. Refer to the ./sample/sample.go file for an example use of gogre3d. It can be run if the runtime dependencies are available (see above).
 
 # License
-## gogre3d
-The MIT License (MIT)
-Copyright (c) 2012 Raphael Estrada (galaktor@gmx.de)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-## Ogre3D
-OGRE (www.ogre3d.org) is made available under the MIT License.
-
-Copyright (c) 2000-2009 Torus Knot Software Ltd
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+gogre3d is licensed under the MIT license. You can find a copy in the LICENSE file, or online at http://opensource.org/licenses/mit-license.php
+Copyright (c) 2012 Raphael Estrada (http://www.galaktor.net)

@@ -7,7 +7,9 @@ TODO: ditch custom C-Wrapper and use community C-bindings to Ogre instead
 package gogre3d
 
 /* 
- #cgo LDFLAGS: -L./ogrelib -lllcoi
+ #cgo CFLAGS:  -I/home/galaktor/code/cpp/llcoi/interface
+ #cgo LDFLAGS: -L/home/galaktor/code/cpp/llcoi
+ #cgo LDFLAGS:  -lllcoi
  #include "ogre_interface.h"
  #include "ois_interface.h"
 */
@@ -67,8 +69,12 @@ func (r *Root) CreateSceneManager(typename, instancename string) SceneManager {
 	return result
 }
 
-func (r *Root) RenderOneFrame(timestep float32) bool {
+func (r *Root) RenderOneFrameEx(timestep float32) bool {
 	return gobool(C.render_one_frame_ex(C.float(timestep)))
+}
+
+func (r *Root) RenderOneFrame() bool {
+	return gobool(C.render_one_frame())
 }
 
 func (r *Root) LoadPlugin(name string) {
