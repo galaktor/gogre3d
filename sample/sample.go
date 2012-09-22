@@ -1,6 +1,6 @@
 package main 
 
-import ".."
+import "github.com/galaktor/gogre3d"
 
 func main() {
 	root := gogre3d.NewRoot("", "", "ogre.log")
