@@ -29,6 +29,25 @@ gogre3d is /not/ a port of ogre to golang. It's a wrapper, and in fact it's real
 
 As far as build and compiling is concerned, llcoi is all that's needed. However, your application might not run if other runtime deps are missing. Obviously Ogre itself has many other dependencies. Depending on how you built llcoi, OIS, Ogre and their dependencies must be available in order to use gogre3d. Installing Ogre is way outside of this scope.
 
+### dependency-related errors
+```bash
+/usr/bin/ld: cannot find -lllcoi
+collect2: ld returned 1 exit status
+
+```
+llcoi was not found. 
+fix: make sure llcoi library is on the library load path
+
+```bash
+libllcoi.so: undefined reference to `Ogre::Root::... etc.
+```
+Ogre libraries not found. 
+fix: make sure i.e. OgreMain is on the library load path
+
+
+
+
+
 ### configuring llcoi paths
 gogre3d uses #cgo (which effectively uses gcc) to include and link header and library files. It needs to know where to find the llcoi headers and dyamic library, otherwise gogre3d won't compile. So open gogre3d.go and right at the top you need to match the paths to your environment:
 

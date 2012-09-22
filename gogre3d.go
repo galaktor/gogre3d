@@ -1,15 +1,11 @@
 /*
-Ogre3d bindings for Go via a slim C-Wrapper. By no means complete, will grow with my project (or by other contributions).
-What /is/ there was tested on Linux x64 with Ogre version 1.8.0
-TODO: ditch custom C-Wrapper and use community C-bindings to Ogre instead
+Ogre3d bindings for Go. Uses llcoi to bind to ogre via c.
 */
 
 package gogre3d
 
 /* 
- #cgo CFLAGS:  -I/home/galaktor/code/cpp/llcoi/interface
- #cgo LDFLAGS: -L/home/galaktor/code/cpp/llcoi
- #cgo LDFLAGS:  -lllcoi
+ #cgo LDFLAGS: -lllcoi
  #include "ogre_interface.h"
  #include "ois_interface.h"
 */
