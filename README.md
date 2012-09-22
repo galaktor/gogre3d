@@ -3,6 +3,24 @@ I am working on a game project using golang and intend to use Ogre3d for graphic
 
 Ogre3d has a huge codebase, and I do not aim to provide a generic, complete interface to it all. Instead it will start off very small, based on my own actual requirements, and grow with the game project.
 
+# quickstart
+## install dependencies
+make sure they are in the library load path (e.g. windows: on the PATH; linux: /usr/lib or similar)
+* install Ogre (http://www.ogre3d.org/ https://bitbucket.org/cabalistic/ogredeps)
+* install llcoi (https://bitbucket.org/galaktor/llcoi)
+
+## gogre3d
+* install using 'go get'
+```bash
+$ go get github.com/galaktor/gogre3d
+```
+
+verify by running the sample
+```bash
+$ cd $GOPATH/src/github.com/galaktor/gogre3d/sample
+$ go run sample.go
+```
+
 ## llcoi
 gogre3d links to Ogre3d via the llcoi project (https://bitbucket.org/galaktor/llcoi). llcoi is a minimalist ANSI C interface to Ogre. The capabilities of gogre3d are directly dependant on llcoi exposing the required functionality. Keep that in mind if you need to change gogre3d - you might need to add a function or two to llcoi, first. I encourage you to contribute whatever you add to llcoi back to the project - it's not an official part of Ogre, and needs the community in order to expand.
 
@@ -43,7 +61,6 @@ libllcoi.so: undefined reference to `Ogre::Root::... etc.
 ```
 Ogre libraries not found. 
 fix: make sure i.e. OgreMain is on the library load path
-
 
 
 
