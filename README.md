@@ -22,6 +22,10 @@ $ cd $GOPATH/src/github.com/galaktor/gogre3d/sample
 $ go run sample.go
 ```
 
+you should see the following image (while it's rendered in realtime, it does not move at the moment)
+![sample render](https://raw.github.com/galaktor/gogre3d/master/sample/test_worked.png)
+
+
 # dependencies explained
 ## llcoi
 gogre3d is /not/ a port of ogre to golang. It's a wrapper, and in fact it's really just a really slim wrapper on top of the already slim C wrapper llcoi (https://bitbucket.org/galaktor/llcoi). gogre3d compiles and links only to llcoi. llcoi, however, obviously depends on Ogre (and OIS).
