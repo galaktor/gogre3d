@@ -10,34 +10,36 @@ make sure they are in the library load path (e.g. windows: on the PATH; linux: /
 * install llcoi (https://bitbucket.org/galaktor/llcoi)
 
 ## gogre3d
-* install using 'go get'
-```bash
+* fetch using 'go get'
+```
 $ go get github.com/galaktor/gogre3d
 ```
-
-verify by running the sample
-```bash
+## test it
+you can verify that it works by running the sample included in the gogre3d sources
+```
 $ cd $GOPATH/src/github.com/galaktor/gogre3d/sample
 $ go run sample.go
 ```
 
+# dependencies explained
 ## llcoi
-gogre3d links to Ogre3d via the llcoi project (https://bitbucket.org/galaktor/llcoi). llcoi is a minimalist ANSI C interface to Ogre. The capabilities of gogre3d are directly dependant on llcoi exposing the required functionality. Keep that in mind if you need to change gogre3d - you might need to add a function or two to llcoi, first. I encourage you to contribute whatever you add to llcoi back to the project - it's not an official part of Ogre, and needs the community in order to expand.
+gogre3d is /not/ a port of ogre to golang. It's a wrapper, and in fact it's really just a really slim wrapper on top of the already slim C wrapper llcoi (https://bitbucket.org/galaktor/llcoi). gogre3d compiles and links only to llcoi. llcoi, however, obviously depends on Ogre (and OIS).
 
-# using it
-gogre3d is still in a /very/ early stage - as a result, the build/deployment is not very user-friendly (yet!). Until I make that better, some minor manual configuration is required.
+The functionality of gogre3d is directly dependant on llcoi exposing the required functionality. Particuly during the early stages, gogre3d will only expose a small subset of llcoi, which in turn only exposes basic ogre functionality.
 
-## dependencies
-gogre3d is /not/ a port of ogre to golang. It's a wrapper, and in fact it's really just a really slim wrapper on top of the already slim C wrapper llcoi. gogre3d compiles and links only to llcoi. llcoi, however, obviously depends on Ogre (and OIS).
+Exposing additional features to both llcoi and gogre3d is fairly trivial. I encourage you to contribute whatever you add back to the projects - it's not an official part of Ogre, and needs the community in order to expand.
 
-### gogre3d depends /directly/ on
+## runtime dependencies
+As far as gogre3d is concerned, llcoi is the only requirement. However, your application might not run if other runtime deps are missing. Obviously Ogre itself has many other dependencies. Depending on how you built llcoi, OIS, Ogre and their dependencies must be available in order to use gogre3d. Installing Ogre is way outside of this scope.
+
+### direct dependencies
 * llcoi
  * ogre_interface.h
  * ois_interface.h
  * libllcoi.so
 
 
-### as a result, gogre3d also depends /indirectly/ (through llcoi) on
+### indirect dependencies (through llcoi)
 * OIS
  * libOIS.so
 * Ogre
@@ -45,56 +47,31 @@ gogre3d is /not/ a port of ogre to golang. It's a wrapper, and in fact it's real
  * (.. other run-time and compile-time dependencies ...)
 
 
-As far as build and compiling is concerned, llcoi is all that's needed. However, your application might not run if other runtime deps are missing. Obviously Ogre itself has many other dependencies. Depending on how you built llcoi, OIS, Ogre and their dependencies must be available in order to use gogre3d. Installing Ogre is way outside of this scope.
-
-### dependency-related errors
+## dependency-related errors
+### llcoi not found
 ```bash
 /usr/bin/ld: cannot find -lllcoi
 collect2: ld returned 1 exit status
 
 ```
-llcoi was not found. 
 fix: make sure llcoi library is on the library load path
 
+### ogre not found
 ```bash
 libllcoi.so: undefined reference to `Ogre::Root::... etc.
 ```
-Ogre libraries not found. 
 fix: make sure i.e. OgreMain is on the library load path
 
 
+## custom dependency locations
+gogre3d uses #cgo (which effectively uses gcc) to include and link to C header and libraries. If you want to point to custom locations of llcoi/ogre dependencies, you can use #cgo directives to do so. Refer to the golang cgo documentation for details: http://golang.org/cmd/cgo/
 
-
-### configuring llcoi paths
-gogre3d uses #cgo (which effectively uses gcc) to include and link header and library files. It needs to know where to find the llcoi headers and dyamic library, otherwise gogre3d won't compile. So open gogre3d.go and right at the top you need to match the paths to your environment:
-
-```go
- #cgo LDFLAGS: -L/path/to/llcoi/library  // <- set this to where llcoi lib is
- #cgo LDFLAGS: -lllcoi                   // <- only change if lib name differs
-
- #cgo CFLAGS:  -I/path/to/llcoi/headers  // <- set this to where the below headers are
- #include "ogre_interface.h"             // <- leave this; llcoi ogre header
- #include "ois_interface.h"              // <- leave this; llcoi ois header
-```
-
-## importing gogre3d
-All of the exposed functionality is currently in a single package, 'gogre3d'. Refer to the ./sample/sample.go file for an example use of gogre3d. It can be run if the runtime dependencies are available (see above).
-
-## running the sample
-Assuming you have llcoi/ogre/ois runtime deps available, you can navigate to the sample dir and just run it.
-
-```
-$ cd sample
-$ go run sample.go
-```
-
-you should see the following image (while it's rendered in realtime, it does not move at the moment)
-![sample render](https://raw.github.com/galaktor/gogre3d/master/sample/test_worked.png)
 
 # TODOs
 * split gogre3d.go into several files
-* improve installation ("go get..." with runtime deps on llcoi/ogre/ois)
-* expose input functionality and include in sample
+* expose more llcoi features (i.e. input) and add to sample
+* idiomatic Go API
+* maybe simplifiy installation including llcoi somehow? maybe provide prebuilt binaries including ogre for 'plug-n-play' effect?
 
 # License
 gogre3d is licensed under the MIT license. You can find a copy in the LICENSE file, or online at http://opensource.org/licenses/mit-license.php
