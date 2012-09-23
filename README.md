@@ -14,6 +14,7 @@ make sure they are in the library load path (e.g. windows: on the PATH; linux: /
 ```
 $ go get github.com/galaktor/gogre3d
 ```
+
 ## test it
 you can verify that it works by running the sample included in the gogre3d sources
 ```
