@@ -30,7 +30,7 @@ you should see the following image (while it's rendered in realtime, it does not
 ## llcoi
 gogre3d is /not/ a port of ogre to golang. It's a wrapper, and in fact it's really just a really slim wrapper on top of the already slim C wrapper llcoi (https://bitbucket.org/galaktor/llcoi). gogre3d compiles and links only to llcoi. llcoi, however, obviously depends on Ogre (and OIS).
 
-The functionality of gogre3d is directly dependant on llcoi exposing the required functionality. Particuly during the early stages, gogre3d will only expose a small subset of llcoi, which in turn only exposes basic ogre functionality.
+The functionality of gogre3d is directly dependant on llcoi exposing the required functionality. Especially during the early stages, gogre3d will only expose a small subset of llcoi, which in turn only exposes basic ogre functionality.
 
 Exposing additional features to both llcoi and gogre3d is fairly trivial. I encourage you to contribute whatever you add back to the projects - it's not an official part of Ogre, and needs the community in order to expand.
 
