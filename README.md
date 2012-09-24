@@ -73,7 +73,7 @@ gogre3d uses #cgo (which effectively uses gcc) to include and link to C header a
 
 
 # TODOs
-* split gogre3d.go into several files
+* DONE split gogre3d.go into several files
 * expose more llcoi features (i.e. input) and add to sample
 * idiomatic Go API
 * maybe simplifiy installation including llcoi somehow? maybe provide prebuilt binaries including ogre for 'plug-n-play' effect?
