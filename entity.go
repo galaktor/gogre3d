@@ -7,5 +7,5 @@ package gogre3d
 import "C"
 
 type Entity struct {
-	CPtr C.EntityHandle
+	cptr C.EntityHandle
 }

@@ -12,30 +12,30 @@ package gogre3d
 import "C"
 
 type Root struct {
-	CPtr C.RootHandle
+	cptr C.RootHandle
 }
 
 func NewRoot(pluginsCfg, ogreCfg, logfile string) Root {
 	var result Root
-	result.CPtr = C.create_root(C.CString(pluginsCfg), C.CString(ogreCfg), C.CString(logfile))
+	result.cptr = C.create_root(C.CString(pluginsCfg), C.CString(ogreCfg), C.CString(logfile))
 
 	return result
 }
 
 func (r *Root) ReleaseEngine() {
 	C.release_engine()
-	r.CPtr = nil
+	r.cptr = nil
 }
 
 func (r *Root) GetRenderSystemByName(name string) RenderSystem {
 	var result RenderSystem
-	result.CPtr = C.get_render_system_by_name(C.CString(name))
+	result.cptr = C.get_render_system_by_name(C.CString(name))
 
 	return result
 }
 
 func (r *Root) SetRenderSystem(s RenderSystem) {
-	C.set_render_system(s.CPtr)
+	C.set_render_system(s.cptr)
 }
 
 func (r *Root) ShowConfigDialog() bool {
@@ -45,14 +45,14 @@ func (r *Root) ShowConfigDialog() bool {
 
 func (r *Root) Initialise(createWindow bool, windowTitle string) RenderWindow {
 	var result RenderWindow
-	result.CPtr = C.root_initialise(cbool(createWindow), C.CString(windowTitle))
+	result.cptr = C.root_initialise(cbool(createWindow), C.CString(windowTitle))
 
 	return result
 }
 
 func (r *Root) CreateSceneManager(typename, instancename string) SceneManager {
 	var result SceneManager
-	result.CPtr = C.create_scene_manager(C.CString(typename), C.CString(instancename))
+	result.cptr = C.create_scene_manager(C.CString(typename), C.CString(instancename))
 
 	return result
 }

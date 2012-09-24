@@ -7,26 +7,26 @@ package gogre3d
 import "C"
 
 type SceneManager struct {
-	CPtr C.SceneManagerHandle
+	cptr C.SceneManagerHandle
 }
 
 func (sm *SceneManager) CreateCamera(name string) Camera {
 	var result Camera
-	result.CPtr = C.create_camera(C.CString(name))
+	result.cptr = C.create_camera(C.CString(name))
 
 	return result
 }
 
 func (sm *SceneManager) CreateEntity(name, meshfile string) Entity {
 	var result Entity
-	result.CPtr = C.create_entity(C.CString(name), C.CString(meshfile))
+	result.cptr = C.create_entity(C.CString(name), C.CString(meshfile))
 
 	return result
 }
 
 func (sm *SceneManager) CreateLight(name string) Light {
 	var result Light
-	result.CPtr = C.create_light(C.CString(name))
+	result.cptr = C.create_light(C.CString(name))
 
 	return result
 }
@@ -37,7 +37,7 @@ func (sm *SceneManager) SetAmbientLight(r, g, b, a float32) {
 
 func CreateChildSceneNode(name string) SceneNode {
 	var result SceneNode
-	result.CPtr = C.create_child_scenenode(C.CString(name))
+	result.cptr = C.create_child_scenenode(C.CString(name))
 
 	return result
 }

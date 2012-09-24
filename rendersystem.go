@@ -7,9 +7,9 @@ package gogre3d
 import "C"
 
 type RenderSystem struct {
-	CPtr C.RenderSystemHandle
+	cptr C.RenderSystemHandle
 }
 
 func (r *RenderSystem) SetConfigOption(key, value string) {
-	C.render_system_set_config_option(r.CPtr, C.CString(key), C.CString(value))
+	C.render_system_set_config_option(r.cptr, C.CString(key), C.CString(value))
 }

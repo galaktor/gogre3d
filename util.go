@@ -1,9 +1,5 @@
 package gogre3d
 
-/* 
- #cgo LDFLAGS: -lllcoi
- #include "ogre_interface.h"
-*/
 import "C"
 
 func gobool(b C.int) bool {

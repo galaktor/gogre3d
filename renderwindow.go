@@ -7,12 +7,12 @@ package gogre3d
 import "C"
 
 type RenderWindow struct {
-	CPtr C.RenderWindowHandle
+	cptr C.RenderWindowHandle
 }
 
 func (rw *RenderWindow) AddViewport(c Camera) Viewport {
 	var result Viewport
-	result.CPtr = C.add_viewport(c.CPtr)
+	result.cptr = C.add_viewport(c.cptr)
 
 	return result
 }
