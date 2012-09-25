@@ -2,6 +2,7 @@ package gogre3d
 
 /* 
  #cgo LDFLAGS: -lllcoi
+ #cgo CFLAGS: -I./llcoihdr
  #include "ogre_interface.h"
 */
 import "C"

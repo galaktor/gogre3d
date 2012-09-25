@@ -2,6 +2,7 @@ package gogre3d
 
 /* 
  #cgo LDFLAGS: -lllcoi
+ #cgo CFLAGS: -I./llcoihdr
  #include "ogre_interface.h"
 */
 import "C"
@@ -11,7 +12,7 @@ type SceneNode struct {
 }
 
 func (n *SceneNode) Attach(e Entity) {
-	C.attach_entity_to_scenenode(e.cptr, n.cptr)
+	C.scenenode_attach_entity(n.cptr, e.cptr)
 }
 
 func (n *SceneNode) Detach(e Entity) {

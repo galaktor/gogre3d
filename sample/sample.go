@@ -34,7 +34,7 @@ func main() {
 	gogre3d.InitialiseAllResourceGroups()
 
 	head := sm.CreateEntity("Head", "ogrehead.mesh")
-	headnode := gogre3d.CreateChildSceneNode("Head")
+	headnode := sm.CreateChildSceneNode("Head")
 	headnode.Attach(head)
 
 	sm.SetAmbientLight(0.5, 0.5, 0.5, 0)
@@ -45,12 +45,12 @@ func main() {
 	for {
 		gogre3d.MessagePump()
 		if window.IsClosed() {
-			root.ReleaseEngine()
+			root.Destroy()
 			return
 		}
 
 		if error := root.RenderOneFrame(); error == false {
-			root.ReleaseEngine()
+			root.Destroy()
 			return
 		}
 	}
