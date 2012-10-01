@@ -13,32 +13,32 @@ type SceneManager struct {
 
 func (sm *SceneManager) CreateCamera(name string) Camera {
 	var result Camera
-	result.cptr = C.create_camera(sm.cptr, C.CString(name))
+	result.cptr = C.scenemanager_create_camera(sm.cptr, C.CString(name))
 
 	return result
 }
 
-func (sm *SceneManager) CreateEntity(name, meshfile string) Entity {
+func (sm *SceneManager) CreateEntity(name, meshfile, groupname string) Entity {
 	var result Entity
-	result.cptr = C.create_entity(sm.cptr, C.CString(name), C.CString(meshfile))
+	result.cptr = C.scenemanager_create_entity(sm.cptr, C.CString(name), C.CString(meshfile), C.CString(groupname))
 
 	return result
 }
 
 func (sm *SceneManager) CreateLight(name string) Light {
 	var result Light
-	result.cptr = C.create_light(sm.cptr, C.CString(name))
+	result.cptr = C.scenemanager_create_light(sm.cptr, C.CString(name))
 
 	return result
 }
 
-func (sm *SceneManager) SetAmbientLight(r, g, b, a float32) {
-	C.set_ambient_light_rgba(sm.cptr, C.float(r), C.float(g), C.float(b), C.float(a))
+func (sm *SceneManager) SetAmbientLight(r, g, b float32) {
+	C.scenemanager_set_ambient_light_rgb(sm.cptr, C.float(r), C.float(g), C.float(b))
 }
 
 func (sm *SceneManager) CreateChildSceneNode(name string) SceneNode {
 	var result SceneNode
-	result.cptr = C.create_child_scenenode(sm.cptr, C.CString(name))
+	result.cptr = C.create_child_of_root_scenenode(sm.cptr, C.CString(name))
 
 	return result
 }

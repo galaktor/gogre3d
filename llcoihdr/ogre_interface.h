@@ -1,39 +1,3 @@
-/******************************************************************************
- * ogre_interface.h - main include file for C clients
- ******************************************************************************
- * This file is part of
- *     __ __              _ 
- *    / // /_____ ____   (_)
- *   / // // ___// __ \ / / 
- *  / // // /__ / /_/ // /  
- * /_//_/ \___/ \____//_/   
- *                          
- * Low Level C Ogre Interface (llcoi)
- *
- * See http://code.google.com/p/llcoi/ for more information.
- *
- * Copyright (c) 2011, Llcoi Team
- * 
- * License: MIT
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- ******************************************************************************/
 #pragma once
 
 // Detect platform
@@ -85,52 +49,43 @@
 #   endif
 #endif
 
-// RAPH force extern c
+// galaktor's galakt-tic hack: force extern "C" when not using CMake
 #ifdef __cplusplus
 #define DLL extern "C"
 #endif
 
+#include <stddef.h> // for size_t
 
-// handle typedefs
-typedef void* RootHandle;
-typedef void* CameraHandle;
-typedef void* EntityHandle;
-typedef void* SceneNodeHandle;
-typedef void* LightHandle;
-typedef void* RenderWindowHandle;
-typedef void* RenderSystemHandle;
-typedef void* SceneManagerHandle;
-typedef void* ViewportHandle;
-// listener typedefs
-typedef int(*FrameListenerEvent)(float,float,int);
-typedef void(*WindowListenerEvent)(RenderWindowHandle);
-
-
-// TODO: move into framelistener bind?
-#define EVENT_FRAME_STARTED 1
-#define EVENT_FRAME_RENDERING_QUEUED 2
-#define EVENT_FRAME_ENDED 4
-
-
-#include "common.h"
-#include "root_bind.h"
+// TODO: merge common/fwd etc
+#include "fwd.h"
+#include "timer_bind.h"
+#include "camera_bind.h"
 #include "renderwindow_bind.h"
 #include "rendersystem_bind.h"
-#include "camera_bind.h"
-#include "scenemanager_bind.h"
+
+#include "meshmanager_bind.h"
+#include "material_bind.h"
+#include "materialmanager_bind.h"
+#include "ray_bind.h"
+#include "skeletoninstance_bind.h"
+#include "entity_bind.h"
+#include "node_bind.h"
+#include "manualobject_bind.h"
+#include "light_bind.h"
+#include "sphere_bind.h"
+#include "movableobject_bind.h"
+#include "scenequery_bind.h"
 #include "scenenode_bind.h"
-//#include "entity_bind.h" // contains nothing (yet)
+#include "scenemanager_bind.h"
+#include "root_bind.h"
 #include "viewport_bind.h"
 #include "resourcegroupmanager_bind.h"
-#include "light_bind.h"
 #include "windoweventlistener_bind.h"
 #include "framelistener_bind.h"
-
-// TODO: move into subfiles
-DLL void scene_manager_log_name();
-// TODO: move out of main.cpp
-DLL void log_message(const char* message);
-DLL void set_default_num_mipmaps(int number);
-
-
+#include "overlay_bind.h"
+#include "overlaycontainer_bind.h"
+#include "resourcemanager_bind.h"
+#include "resource_bind.h"
+#include "texturemanager_bind.h"
+// probably some missing; check llcoi.h for complete(r) list
 

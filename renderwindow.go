@@ -13,7 +13,7 @@ type RenderWindow struct {
 
 func (rw *RenderWindow) AddViewport(c Camera) Viewport {
 	var result Viewport
-	result.cptr = C.add_viewport(rw.cptr, c.cptr)
+	result.cptr = C.render_window_add_viewport(rw.cptr, c.cptr, 0, 0, 0, 1, 1)
 
 	return result
 }
