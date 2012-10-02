@@ -148,5 +148,5 @@ namespace OIS
     class MouseEvent;
 };
 
-void ois_mouse_event_to_llcoi_mouse_event(const OIS::MouseEvent* ois_mouse_event, MouseEvent* llcoi_mouse_event);
+void ois_mouse_event_to_llcoi_mouse_event(const OIS::MouseEvent* ois_mouse_event, MouseState* llcoi_mouse_state);
 MouseButtonID ois_mbid_to_llcoi_mbid(OIS::MouseButtonID id);

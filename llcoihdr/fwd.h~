@@ -605,7 +605,7 @@ typedef int(*FrameEnded)(const FrameEvent* event, void* userdata);
 typedef int(*FrameQueued)(const FrameEvent* event, void* userdata);
 typedef int(*FrameListenerEvent)(float,float,int);
 
-typedef enum
+enum KeyCode
 {
     KC_UNASSIGNED  = 0x00,
     KC_ESCAPE      = 0x01,
@@ -752,20 +752,20 @@ typedef enum
     KC_MYCOMPUTER  = 0xEB,    // My Computer
     KC_MAIL        = 0xEC,    // Mail
     KC_MEDIASELECT = 0xED     // Media Select
-}  KeyCode;
+};
 
 typedef struct 
 {
-    KeyCode key;
+    enum KeyCode key;
     unsigned int text;
 } KeyEvent;
 
-typedef enum
+enum Key_Modifier
 {
     Shift = 0x0000001,
     Ctrl  = 0x0000010,
     Alt   = 0x0000100
-} KeyModifier;
+};
 
 typedef struct
 {
@@ -787,22 +787,31 @@ typedef struct
     int buttons;
 } MouseState;
 
-typedef enum
+enum MouseButtonID
 {
     MB_Left = 0, MB_Right, MB_Middle,
     MB_Button3, MB_Button4, MB_Button5, MB_Button6, MB_Button7
-} MouseButtonID;
+};
 
-//typedef struct _MouseEvent MouseEvent;
-//typedef struct _MouseEvent
-//{
-//    MouseState state;
-//};
+typedef struct _MouseEvent MouseEvent;
+struct _MouseEvent
+{
+    MouseState state;
+};
 
 // Callbacks for MouseListeners
-typedef int(*MouseMovedEvent)(const MouseState* event, void* userdata);
-typedef int(*MousePressedEvent)(const MouseState* event, MouseButtonID id, void* userdata);
-typedef int(*MouseReleasedEvent)(const MouseState* event, MouseButtonID id, void* userdata);
+typedef int(*MouseMovedEvent)(const MouseEvent* event, void* userdata);
+
+// TODO: find out why compiler complains about MouseButtonID!
+// error: 
+/*
+In file included from ./llcoihdr/ogre_interface.h:55,
+from camera.go:3:
+./llcoihdr/fwd.h:803: error: expected declaration specifiers or '...' before 'MouseButtonID'
+./llcoihdr/fwd.h:804: error: expected declaration specifiers or '...' before 'MouseButtonID'
+*/
+typedef int(*MousePressedEvent)(const MouseEvent* event, MouseButtonID id, void* userdata);
+typedef int(*MouseReleasedEvent)(const MouseEvent* event, MouseButtonID id, void* userdata);
 
 typedef void(*LogListenerEvent)(const char* message, log_message_level lml, int maskDebug, const char* log_name, int skip_message);
 

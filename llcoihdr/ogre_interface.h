@@ -50,9 +50,9 @@
 #endif
 
 // galaktor's galakt-tic hack: force extern "C" when not using CMake
-#ifdef __cplusplus
-#define DLL extern "C"
-#endif
+//#ifdef __cplusplus
+//#define DLL extern "C"
+//#endif
 
 #include <stddef.h> // for size_t
 

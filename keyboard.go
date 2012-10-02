@@ -170,11 +170,11 @@ type Keyboard struct {
 }
 
 func (k *Keyboard) KeyDown(c KeyCode) bool {
-	return gobool(C.keyboard_is_key_down(C.KeyCode(keycode)))
+	return gobool(C.keyboard_is_key_down(k.cptr, C.KeyCode(c)))
 }
 
 func (k *Keyboard) ModifierDown(m KeyModifier) bool {
-	return gobool(C.keyboard_is_modifier_down(C.KeyModifier(m)))
+	return gobool(C.keyboard_is_modifier_down(k.cptr, C.KeyModifier(m)))
 }
 
 func (k *Keyboard) Capture() {

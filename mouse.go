@@ -17,9 +17,18 @@ type Axis struct {
 }
 
 type MouseState struct {
-	Width, Height int
+	// TODO: hold cptr to modify width/height
+	width, height int
 	X, Y, Z Axis
 	Buttons int
+}
+
+func (m *MouseState) Width() int {
+	return m.width
+}
+
+func (m *MouseState) SetWidth(w int) {
+	
 }
 
 type MouseButtonId uint8
@@ -34,23 +43,30 @@ const (
 	MB_7
 )
 
-type MouseMovedEventHandler func(e MouseState, userdata interface{})bool
-type MousePressedEventHandler func(e MouseState, b MouseButtonId, userdata interface{})bool
-type MouseReleasedEventHandler func(e MouseState, b MouseButtonid, userdata interface{})bool
+
 
 func goMouseState(s *C.MouseState) MouseState {
 	return MouseState{
-		Width: s.width,
-		Height: s.height,
-		X: s.x,
-		Y: s.y,
-		Z: s.z,
-		Buttons: s.buttons,
+		width: int(s.width),
+		height: int(s.height),
+		X: goAxis(&s.X),
+		Y: goAxis(&s.Y),
+		Z: goAxis(&s.Z),
+		Buttons: int(s.buttons),
+	}
+}
+
+func goAxis(a *C.Axis) Axis {
+	return Axis{
+		Abs: gobool(a.abs),
+		Rel: gobool(a.rel),
+		AbsOnly: gobool(a.absOnly),
 	}
 }
 
 func (m *Mouse) State() MouseState {
-	return goMouseState(C.mouse_get_state(m.cptr))
+	cms := C.mouse_get_state(m.cptr)
+	return goMouseState(&cms)
 }
 
 func (m *Mouse) Capture() {
@@ -60,3 +76,12 @@ func (m *Mouse) Capture() {
 func (m *Mouse) Buffered(b bool) {
 	C.mouse_set_buffered(m.cptr, cbool(b))
 }
+
+/* 
+type MouseMovedEventHandler func(e MouseState, userdata interface{})bool
+type MousePressedEventHandler func(e MouseState, b MouseButtonId, userdata interface{})bool
+type MouseReleasedEventHandler func(e MouseState, b MouseButtonId, userdata interface{})bool
+*/
+
+// TODO: set mouse event
+// TODO: remove mouse event

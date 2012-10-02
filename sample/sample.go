@@ -12,7 +12,7 @@ func main() {
         rs.SetConfigOption("Video Mode", "800 x 600 @ 32-bit")
         root.SetRenderSystem(rs)
 
-	window := root.Initialise(true, "MyWindow")
+	window := root.Initialise(true, "gogre3d sample")
 	sm := root.CreateSceneManager("DefaultSceneManager", "The SceneManager")
 	cam := sm.CreateCamera("MyCamera")
 	cam.SetPosition(0, 0, 80)
@@ -20,33 +20,45 @@ func main() {
 	cam.SetNearClipDistance(5)
 
 	vp := window.AddViewport(cam)
-	vp.SetBackgroundColour(0, 0, 0)
+	vp.SetBackgroundColour(0.01, 0, 0, 0)
 	
-	cam.SetAspectRatio(vp.GetWidth(), vp.GetHeight())
+	cam.SetAspectRatio(vp.GetActualWidth(), vp.GetActualHeight())
 	
 	gogre3d.SetDefaultNumMipmaps(5)
 
-	gogre3d.AddResourceLocation("./media/fonts", "FileSystem", "Default")
-	gogre3d.AddResourceLocation("./media/models", "FileSystem", "Default")
-	gogre3d.AddResourceLocation("./media/materials/scripts", "FileSystem", "Default")
-	gogre3d.AddResourceLocation("./media/materials/programs", "FileSystem", "Default")
-	gogre3d.AddResourceLocation("./media/materials/textures", "FileSystem", "Default")
-	gogre3d.InitialiseAllResourceGroups()
+	rgm := gogre3d.GetResourceGroupManager()
+	rgm.AddResourceLocation("./media/fonts", "FileSystem", "Default")
+	rgm.AddResourceLocation("./media/models", "FileSystem", "Default")
+	rgm.AddResourceLocation("./media/materials/scripts", "FileSystem", "Default")
+	rgm.AddResourceLocation("./media/materials/programs", "FileSystem", "Default")
+	rgm.AddResourceLocation("./media/materials/textures", "FileSystem", "Default")
+	rgm.InitialiseAllResourceGroups()
 
-	head := sm.CreateEntity("Head", "ogrehead.mesh")
+	head := sm.CreateEntity("Head", "ogrehead.mesh", "Default")
 	headnode := sm.CreateChildSceneNode("Head")
 	headnode.Attach(head)
 
-	sm.SetAmbientLight(0.5, 0.5, 0.5, 0)
+	sm.SetAmbientLight(0.5, 0.5, 0.5)
 	
 	light := sm.CreateLight("MyLight")
 	light.SetPosition(20, 80, 50)
+
+	// OIS tests
+	i := gogre3d.NewInput(window)
+	kb := i.NewKeyboard(false)
 
 	for {
 		gogre3d.MessagePump()
 		if window.IsClosed() {
 			root.Destroy()
 			return
+		}
+
+		
+		if kb.Capture(); kb.KeyDown(gogre3d.KC_LEFT) {
+			println("left pressed!")
+		} else {
+			println("not!")
 		}
 
 		if error := root.RenderOneFrame(); error == false {
