@@ -23,6 +23,11 @@ func (rw *RenderWindow) IsClosed() bool {
 	return gobool(result)
 }
 
+// TODO: c func takes unsigned int
+func (rw *RenderWindow) Handle() int {
+	return C.render_window_get_hwnd(rw.cptr)
+}
+
 func MessagePump() {
 	C.pump_messages()
 }
