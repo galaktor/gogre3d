@@ -73,8 +73,10 @@ gogre3d uses #cgo (which effectively uses gcc) to include and link to C header a
 
 
 # TODOs
-* DONE split gogre3d.go into several files
-* expose more llcoi features (i.e. input) and add to sample
+* better Mouse input
+* move input into "gois" package
+ * subpackages for mouse/keyboard, useful for constants (gogre3d.KC_UP isn't nice, something like key.UP would be better)
+* expose more of llcoi's functionality, particularly scene/node/entity/light/camera basics
 * idiomatic Go API
 * maybe simplifiy installation including llcoi somehow? maybe provide prebuilt binaries including ogre for 'plug-n-play' effect?
 
