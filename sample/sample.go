@@ -1,6 +1,9 @@
 package main 
 
-import "github.com/galaktor/gogre3d"
+import (
+	"time"
+	"github.com/galaktor/gogre3d"
+)
 
 func main() {
 	root := gogre3d.NewRoot("", "", "ogre.log")
@@ -47,23 +50,40 @@ func main() {
 	i := gogre3d.NewInput(window)
 	kb := i.NewKeyboard(false)
 
-	for {
+	ticker := time.Tick(40 * time.Millisecond)
+	
+	running := true
+	for running {
 		gogre3d.MessagePump()
 		if window.IsClosed() {
-			root.Destroy()
-			return
+			running = false
+			break
 		}
 
-		
-		if kb.Capture(); kb.KeyDown(gogre3d.KC_LEFT) {
-			println("left pressed!")
-		} else {
-			println("not!")
+
+		kb.Capture()
+		switch {
+		case kb.KeyDown(gogre3d.KC_LEFT):
+			headnode.Yaw(-0.1, gogre3d.TS_LOCAL)
+		case kb.KeyDown(gogre3d.KC_RIGHT):
+			headnode.Yaw(0.1, gogre3d.TS_LOCAL)
+		case kb.KeyDown(gogre3d.KC_UP):
+			headnode.Pitch(-0.1, gogre3d.TS_LOCAL)
+		case kb.KeyDown(gogre3d.KC_DOWN):
+			headnode.Pitch(0.1, gogre3d.TS_LOCAL)
+		case kb.KeyDown(gogre3d.KC_ESCAPE):
+			running = false
+			break
 		}
 
 		if error := root.RenderOneFrame(); error == false {
-			root.Destroy()
-			return
+			running = false
+			break
 		}
+
+		<-ticker
 	}
+
+	root.Destroy()
+	return
 }
