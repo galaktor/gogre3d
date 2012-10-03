@@ -16,6 +16,7 @@ func main() {
         root.SetRenderSystem(rs)
 
 	window := root.Initialise(true, "gogre3d sample")
+	window.Reposition(0, 0)
 	sm := root.CreateSceneManager("DefaultSceneManager", "The SceneManager")
 	cam := sm.CreateCamera("MyCamera")
 	cam.SetPosition(0, 0, 80)

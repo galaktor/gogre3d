@@ -19,6 +19,8 @@ DLL void current_window_update(RenderWindowHandle window_handle, int swap_buffer
 
 DLL void render_window_resize(RenderWindowHandle window_handle, unsigned int width, unsigned int height);
 
+DLL void render_window_reposition(RenderWindowHandle window_handle, int left, int top);
+
 DLL void render_window_moved_or_resized(RenderWindowHandle window_handle);
 
 DLL int render_window_closed(RenderWindowHandle window_handle);

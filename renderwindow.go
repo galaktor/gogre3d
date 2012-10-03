@@ -27,6 +27,10 @@ func (rw *RenderWindow) Handle() uint {
 	return uint(C.render_window_get_hwnd(rw.cptr))
 }
 
+func (rw *RenderWindow) Reposition(left, top int) {
+	C.render_window_reposition(rw.cptr, C.int(left), C.int(top))
+}
+
 func MessagePump() {
 	C.pump_messages()
 }
