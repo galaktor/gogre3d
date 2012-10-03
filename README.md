@@ -22,7 +22,7 @@ $ cd $GOPATH/src/github.com/galaktor/gogre3d/sample
 $ go run sample.go
 ```
 
-you should see the following image (while it's rendered in realtime, it does not move at the moment)
+you should see the following ogre. Arrow keys rotate the head, Escape exits the demo.
 ![sample render](https://raw.github.com/galaktor/gogre3d/master/sample/test_worked.png)
 
 
