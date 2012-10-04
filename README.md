@@ -22,8 +22,10 @@ $ cd $GOPATH/src/github.com/galaktor/gogre3d/sample
 $ go run sample.go
 ```
 
-you should see the following ogre. 
+you should see the following ogre:
+
 ![sample render](https://raw.github.com/galaktor/gogre3d/master/sample/demo.gif)
+
 * Arrow keys: rotate head
 * Mouse X/Y axis: rotate head
 * Mouse left button: reset head orientation
