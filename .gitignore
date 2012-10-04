@@ -1,2 +1,6 @@
+## EMACS backup/recovery files
 *.*~
-#*.*#
+*.*#
+
+## OGRE log files
+*.log

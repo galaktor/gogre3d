@@ -25,14 +25,22 @@ $ go run sample.go
 you should see the following ogre. Arrow keys rotate the head, Escape exits the demo.
 ![sample render](https://raw.github.com/galaktor/gogre3d/master/sample/demo.gif)
 
+# Feature X from Ogre is missing!
+The functionality of gogre3d is directly dependant on llcoi exposing the required functionality. Especially during the early stages, gogre3d will only expose a small subset of llcoi, which in turn only exposes basic ogre functionality.
+
+## Can you add it for me? Please?
+Feel free to create an issue on this github project page if you require specific Ogre features that are not exposed yet. I'm constantly working on it as part of my other projects and I might be able to just put it in for you. But bear with me, this is not my full-time job, so it might take a while.
+
+## DIY
+However, if you're somewhat familiar with Ogre and know a bit of C/C++ it shouldn't take more than a few minutes to do it yourself. If you're afraid of C/C++ - don't be. Embrace it and grow.
+
+## Think of the children!
+I encourage you to contribute whatever you add back to the projects - it's not an official part of Ogre, and needs the community in order to expand.
 
 # dependencies explained
 ## llcoi
 gogre3d is /not/ a port of ogre to golang. It's a wrapper, and in fact it's really just a really slim wrapper on top of the already slim C wrapper llcoi (https://bitbucket.org/galaktor/llcoi). gogre3d compiles and links only to llcoi. llcoi, however, obviously depends on Ogre (and OIS).
 
-The functionality of gogre3d is directly dependant on llcoi exposing the required functionality. Especially during the early stages, gogre3d will only expose a small subset of llcoi, which in turn only exposes basic ogre functionality.
-
-Exposing additional features to both llcoi and gogre3d is fairly trivial. I encourage you to contribute whatever you add back to the projects - it's not an official part of Ogre, and needs the community in order to expand.
 
 ## runtime dependencies
 As far as gogre3d is concerned, llcoi is the only requirement. However, your application might not run if other runtime deps are missing. Obviously Ogre itself has many other dependencies. Depending on how you built llcoi, OIS, Ogre and their dependencies must be available in order to use gogre3d. Installing Ogre is way outside of this scope.
