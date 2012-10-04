@@ -56,6 +56,8 @@ DLL void scenenode_set_direction(SceneNodeHandle scenenode_handle, float x, floa
 
 DLL void scenenode_set_orientation(SceneNodeHandle scenenode_handle, float w, float x, float y, float z);
 
+DLL void scenenode_reset_orientation(SceneNodeHandle scenenode_handle);
+
 DLL void scenenode_set_position(SceneNodeHandle scenenode_handle, float x, float y, float z);
 
 DLL void scenenode_get_position(SceneNodeHandle handle, coiVector3* pos);

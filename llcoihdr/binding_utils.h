@@ -140,9 +140,7 @@ polygon_mode enum_converter(Ogre::PolygonMode arg);
 
 
 /* OIS MouseState <-> LLCOI MouseState converters */
-
 #include <OISMouse.h>           // OIS::MouseButtonID
-typedef struct _MouseEvent MouseEvent;
 namespace OIS
 {
     class MouseEvent;

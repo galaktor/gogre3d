@@ -12,30 +12,21 @@ type Mouse struct {
 }
 
 type Axis struct {
-	Abs, Rel bool
+	Abs, Rel int
 	AbsOnly bool
 }
 
 type MouseState struct {
-	// TODO: hold cptr to modify width/height
-	width, height int
 	X, Y, Z Axis
-	Buttons int
-}
-
-func (m *MouseState) Width() int {
-	return m.width
-}
-
-func (m *MouseState) SetWidth(w int) {
-	
+	buttons MouseButtonId
 }
 
 type MouseButtonId uint8
 const (
-	MB_0_Left MouseButtonId = iota
-	MB_1_Right
-	MB_2_Middle
+	_ = iota // skip 0
+	MB_Left MouseButtonId = iota
+	MB_Right
+	MB_Middle
 	MB_3
 	MB_4
 	MB_5
@@ -43,23 +34,23 @@ const (
 	MB_7
 )
 
-
+func (ms *MouseState) ButtonPressed(b MouseButtonId) bool {
+	return ms.buttons & b == b
+}
 
 func goMouseState(s *C.MouseState) MouseState {
 	return MouseState{
-		width: int(s.width),
-		height: int(s.height),
 		X: goAxis(&s.X),
 		Y: goAxis(&s.Y),
 		Z: goAxis(&s.Z),
-		Buttons: int(s.buttons),
+		buttons: MouseButtonId(s.buttons),
 	}
 }
 
 func goAxis(a *C.Axis) Axis {
 	return Axis{
-		Abs: gobool(a.abs),
-		Rel: gobool(a.rel),
+		Abs: int(a.abs),
+		Rel: int(a.rel),
 		AbsOnly: gobool(a.absOnly),
 	}
 }
@@ -67,6 +58,10 @@ func goAxis(a *C.Axis) Axis {
 func (m *Mouse) State() MouseState {
 	cms := C.mouse_get_state(m.cptr)
 	return goMouseState(&cms)
+}
+
+func (m *Mouse) DisplayArea (width, height int) {
+	C.mouse_set_display_area(m.cptr, C.int(width), C.int(height))
 }
 
 func (m *Mouse) Capture() {

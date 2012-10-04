@@ -777,12 +777,8 @@ typedef struct
 
 typedef struct
 {
-    int width, height;
-    //! X Axis component
     Axis X;
-    //! Y Axis Component
     Axis Y;
-    //! Z Axis Component
     Axis Z;
     int buttons;
 } MouseState;
@@ -792,12 +788,6 @@ typedef enum
     MB_Left = 0, MB_Right, MB_Middle,
     MB_Button3, MB_Button4, MB_Button5, MB_Button6, MB_Button7
 } MouseButtonID;
-
-//typedef struct _MouseEvent MouseEvent;
-//typedef struct _MouseEvent
-//{
-//    MouseState state;
-//};
 
 // Callbacks for MouseListeners
 typedef int(*MouseMovedEvent)(const MouseState* event, void* userdata);

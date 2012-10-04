@@ -11,3 +11,5 @@ DLL MouseState mouse_get_state(MouseInputHandle mouse_handle);
 DLL void mouse_set_buffered(MouseInputHandle mouse_handle, int buffered);
 
 DLL void mouse_capture(MouseInputHandle mouse_handle);
+
+DLL void mouse_set_display_area(MouseInputHandle mouse_handle, int width, int height);

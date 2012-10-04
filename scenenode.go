@@ -45,3 +45,7 @@ func (n *SceneNode) Pitch(radians float32, t TransformSpace) {
 func (n *SceneNode) Roll(radians float32, t TransformSpace) {
 	C.scenenode_roll(n.cptr, C.coiReal(radians), C.transform_space(t))
 }
+
+func (n *SceneNode) ResetOrientation() {
+	C.scenenode_reset_orientation(n.cptr)
+}
