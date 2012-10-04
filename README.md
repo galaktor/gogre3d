@@ -22,8 +22,11 @@ $ cd $GOPATH/src/github.com/galaktor/gogre3d/sample
 $ go run sample.go
 ```
 
-you should see the following ogre. Arrow keys rotate the head, Escape exits the demo.
+you should see the following ogre. 
 ![sample render](https://raw.github.com/galaktor/gogre3d/master/sample/demo.gif)
+* Arrow keys: rotate head
+* Mouse X/Y axis: rotate head
+* Mouse left button: reset head orientation
 
 # Feature X from Ogre is missing!
 The functionality of gogre3d is directly dependant on llcoi exposing the required functionality. Especially during the early stages, gogre3d will only expose a small subset of llcoi, which in turn only exposes basic ogre functionality.
