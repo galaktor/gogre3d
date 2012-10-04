@@ -23,7 +23,7 @@ $ go run sample.go
 ```
 
 you should see the following ogre. Arrow keys rotate the head, Escape exits the demo.
-![sample render](https://raw.github.com/galaktor/gogre3d/master/sample/test_worked.png)
+![sample render](https://raw.github.com/galaktor/gogre3d/master/sample/demo.gif)
 
 
 # dependencies explained
