@@ -61,18 +61,20 @@ func main() {
 			break
 		}
 
-
 		kb.Capture()
-		switch {
-		case kb.KeyDown(gogre3d.KC_LEFT):
+		if kb.KeyDown(gogre3d.KC_LEFT){
 			headnode.Yaw(-0.1, gogre3d.TS_LOCAL)
-		case kb.KeyDown(gogre3d.KC_RIGHT):
+		}
+		if kb.KeyDown(gogre3d.KC_RIGHT) {
 			headnode.Yaw(0.1, gogre3d.TS_LOCAL)
-		case kb.KeyDown(gogre3d.KC_UP):
+		}
+		if kb.KeyDown(gogre3d.KC_UP) {
 			headnode.Pitch(-0.1, gogre3d.TS_LOCAL)
-		case kb.KeyDown(gogre3d.KC_DOWN):
+		}
+		if kb.KeyDown(gogre3d.KC_DOWN) {
 			headnode.Pitch(0.1, gogre3d.TS_LOCAL)
-		case kb.KeyDown(gogre3d.KC_ESCAPE):
+		}
+		if kb.KeyDown(gogre3d.KC_ESCAPE) {
 			running = false
 			break
 		}
