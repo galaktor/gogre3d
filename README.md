@@ -29,6 +29,7 @@ you should see the following ogre:
 * Arrow keys: rotate head
 * Mouse X/Y axis: rotate head
 * Mouse left button: reset head orientation
+* ESCAPE: exit sample
 
 # Feature X from Ogre is missing!
 The functionality of gogre3d is directly dependant on llcoi exposing the required functionality. Especially during the early stages, gogre3d will only expose a small subset of llcoi, which in turn only exposes basic ogre functionality.
